@@ -1,0 +1,285 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+:root {
+  --background: hsl(220, 10%, 7%);
+  --foreground: hsl(45, 80%, 96%);
+  --primary: hsl(41, 100%, 60%);
+  --primary-light: hsl(41, 100%, 75%);
+  --secondary: hsl(220, 10%, 15%);
+  --muted: hsl(220, 10%, 13%);
+  --muted-foreground: hsl(45, 10%, 80%);
+  --card: hsl(220, 10%, 9%);
+  --card-foreground: hsl(45, 80%, 96%);
+  --border: hsl(220, 15%, 20%);
+  --gold-dark: hsl(36, 100%, 50%);
+  --radius: 0.75rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+}
+
+.main {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--background);
+}
+
+/* Bakgrundsmönster */
+.main::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: repeat;
+  background-size: 200px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Bakgrundsgradienter */
+.bg-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, var(--background), rgba(0, 0, 0, 0.9));
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(3rem);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.top-left {
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 50%;
+  background: linear-gradient(to bottom right, var(--primary), transparent);
+  opacity: 0.2;
+  transform: translate(-33%, -33%);
+}
+
+.bottom-right {
+  bottom: 0;
+  right: 0;
+  width: 50%;
+  height: 50%;
+  background: linear-gradient(to top left, var(--primary), transparent);
+  opacity: 0.2;
+  transform: translate(33%, 33%);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+}
+
+.glass-panel {
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(1rem);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  animation: fadeUp 0.8s ease-out forwards;
+  border: 1px solid hsla(41, 100%, 60%, 0.3);
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.image-section {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.image-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.image-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 33%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  z-index: 2;
+}
+
+.content-section {
+  width: 100%;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--card);
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s ease-out 0.3s forwards;
+}
+
+.location-tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background-color: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--gold-dark));
+  color: black;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  animation: pulse 3s infinite;
+}
+
+.title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(to right, var(--primary), var(--primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  line-height: 1.2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.description {
+  color: var(--muted-foreground);
+  font-size: 1.125rem;
+  max-width: 28rem;
+}
+
+.quote-section {
+  padding-top: 1rem;
+}
+
+.divider {
+  height: 2px;
+  width: 4rem;
+  background-color: var(--primary);
+  margin-bottom: 1.5rem;
+}
+
+.quote {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.footer {
+  margin-top: 2rem;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  opacity: 0.75;
+  animation: fadeIn 1s ease-out 1s forwards;
+  opacity: 0;
+}
+
+/* Animationer */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+/* Responsivitet */
+@media (min-width: 768px) {
+  .content-wrapper {
+    flex-direction: row;
+  }
+  
+  .image-section {
+    width: 50%;
+    height: auto;
+    min-height: 520px;
+  }
+  
+  .content-section {
+    width: 50%;
+    padding: 2.5rem;
+  }
+  
+  .title {
+    font-size: 3rem;
+  }
+  
+  .description {
+    font-size: 1.25rem;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
